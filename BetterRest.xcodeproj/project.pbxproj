@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		20F1F4DE2F9162220011DD3C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 20F1F4DD2F9162220011DD3C /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		20F1F4CF2F9161CB0011DD3C /* BetterRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20F1F4DD2F9162220011DD3C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		20F1F4C62F9161CB0011DD3C = {
 			isa = PBXGroup;
 			children = (
+				20F1F4DD2F9162220011DD3C /* README.md */,
 				20F1F4D12F9161CB0011DD3C /* BetterRest */,
 				20F1F4D02F9161CB0011DD3C /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20F1F4DE2F9162220011DD3C /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
