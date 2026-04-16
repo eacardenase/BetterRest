@@ -22,7 +22,8 @@ struct ContentView: View {
 
             DatePicker(
                 "Please enter a date",
-                selection: $wakeUp
+                selection: $wakeUp,
+                in: Date.now...,
             )
             .labelsHidden()
         }
