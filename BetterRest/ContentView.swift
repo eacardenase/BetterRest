@@ -9,17 +9,26 @@ import CoreML
 import SwiftUI
 
 struct ContentView: View {
-    @State private var wakeUp = Date.now
+    @State private var wakeUp = defaultWakeTime
     @State private var sleepAmount = 8.0
-    @State private var coffeeAmount = 1.0
+    @State private var coffeeAmount = 1
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false
 
+    static private var defaultWakeTime: Date {
+        var components = DateComponents()
+
+        components.hour = 7
+        components.minute = 0
+
+        return Calendar.current.date(from: components) ?? .now
+    }
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                VStack {
+            Form {
+                VStack(alignment: .leading, spacing: 4) {
                     Text("When do you want to wake up?")
                         .font(.headline)
 
@@ -31,7 +40,7 @@ struct ContentView: View {
                     .labelsHidden()
                 }
 
-                VStack {
+                VStack(alignment: .leading, spacing: 4) {
                     Text("Desired amount of sleep")
                         .font(.headline)
 
@@ -43,18 +52,13 @@ struct ContentView: View {
                     )
                 }
 
-                VStack {
+                VStack(alignment: .leading, spacing: 4) {
                     Text("Daily coffee intake")
                         .font(.headline)
 
-                    Stepper(
-                        "\(coffeeAmount.formatted()) cup(s)",
-                        value: $coffeeAmount,
-                        in: 0...20
-                    )
+                    Stepper("^[\(coffeeAmount) cup](inflect: true)", value: $coffeeAmount, in: 0...20)
                 }
             }
-            .padding()
             .navigationTitle("BetterRest")
             .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") {}
@@ -82,7 +86,7 @@ struct ContentView: View {
             let prediction = try model.prediction(
                 wake: Double(hour + minute),
                 estimatedSleep: sleepAmount,
-                coffee: coffeeAmount
+                coffee: Double(coffeeAmount)
             )
 
             let sleepTime = wakeUp - prediction.actualSleep
