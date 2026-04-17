@@ -12,6 +12,9 @@ struct ContentView: View {
     @State private var wakeUp = Date.now
     @State private var sleepAmount = 8.0
     @State private var coffeeAmount = 1.0
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var showingAlert = false
 
     var body: some View {
         NavigationStack {
@@ -47,12 +50,17 @@ struct ContentView: View {
                     Stepper(
                         "\(coffeeAmount.formatted()) cup(s)",
                         value: $coffeeAmount,
-                        in: 1...20
+                        in: 0...20
                     )
                 }
             }
             .padding()
             .navigationTitle("BetterRest")
+            .alert(alertTitle, isPresented: $showingAlert) {
+                Button("OK") {}
+            } message: {
+                Text(alertMessage)
+            }
             .toolbar {
                 Button("Calculate", action: calculateBedtime)
             }
@@ -76,11 +84,18 @@ struct ContentView: View {
                 estimatedSleep: sleepAmount,
                 coffee: coffeeAmount
             )
-            
-            let sleepTime = wakeUp - prediction.actualSleep
-        } catch {
 
+            let sleepTime = wakeUp - prediction.actualSleep
+
+            alertTitle = "Your ideal bedtime is..."
+            alertMessage = sleepTime.formatted(date: .omitted, time: .shortened)
+        } catch {
+            alertTitle = "Error"
+            alertMessage =
+                "Sorry, there was a problem calculating your bedtime."
         }
+
+        showingAlert = true
     }
 }
 
