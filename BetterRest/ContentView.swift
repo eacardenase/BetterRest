@@ -5,12 +5,13 @@
 //  Created by Edwin Cardenas on 4/16/26.
 //
 
+import CoreML
 import SwiftUI
 
 struct ContentView: View {
     @State private var wakeUp = Date.now
     @State private var sleepAmount = 8.0
-    @State private var coffeeAmount = 1
+    @State private var coffeeAmount = 1.0
 
     var body: some View {
         NavigationStack {
@@ -44,7 +45,7 @@ struct ContentView: View {
                         .font(.headline)
 
                     Stepper(
-                        "\(coffeeAmount) cup(s)",
+                        "\(coffeeAmount.formatted()) cup(s)",
                         value: $coffeeAmount,
                         in: 1...20
                     )
@@ -59,7 +60,27 @@ struct ContentView: View {
     }
 
     func calculateBedtime() {
-        print(#function)
+        do {
+            let config = MLModelConfiguration()
+            let model = try BetterRest(configuration: config)
+
+            let components = Calendar.current.dateComponents(
+                [.hour, .minute],
+                from: wakeUp
+            )
+            let hour = (components.hour ?? 0) * 60 * 60
+            let minute = (components.minute ?? 0) * 60
+
+            let prediction = try model.prediction(
+                wake: Double(hour + minute),
+                estimatedSleep: sleepAmount,
+                coffee: coffeeAmount
+            )
+            
+            let sleepTime = wakeUp - prediction.actualSleep
+        } catch {
+
+        }
     }
 }
 
